@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 #define DECK_SIZE 52
 
@@ -14,21 +15,7 @@ typedef enum{
     Dummy
 }CardSigns;
 
-std::ostream& operator<<(std::ostream& out, const CardSigns value){
-    static std::map<CardSigns, std::string> strings;
-    if (strings.size() == 0){
-#define INSERT_ELEMENT(p) strings[p] = #p
-        INSERT_ELEMENT(Spade);     
-        INSERT_ELEMENT(Heart);     
-        INSERT_ELEMENT(Club);
-        INSERT_ELEMENT(Diamond);             
-        INSERT_ELEMENT(Dummy);             
-
-#undef INSERT_ELEMENT
-    }   
-
-    return out << strings[value];
-}
+std::ostream& operator<<(std::ostream& out, const CardSigns value);
 
 class Card{
 
@@ -51,13 +38,16 @@ class Card{
 class Deck{
 
     private:
-    Card* cards;
+    std::vector<Card> cards;
     size_t deck_size;
 
     public:
-    Deck():deck_size(DECK_SIZE){cards = new Card[deck_size];};
-    ~Deck(){delete[] cards;};
-    Card* getCardsPtr(){return cards;};
+    Deck():deck_size(DECK_SIZE){};
+    ~Deck(){};
+    std::vector<Card> getCardsVec(){return cards;};
     void initalizeDeck();
     void printDeck();
+    void removeCard(size_t idx);
+    void removeCard(size_t number, CardSigns sign);
+    Card* pickCards(size_t n);
 };
